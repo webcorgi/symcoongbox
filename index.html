@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+    <meta name="color-scheme" content="light">
+    <meta name="supported-color-schemes" content="light">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>심쿵박스 — 웹퍼블리싱 페이지 목록</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0f0f14;
+      --surface: #1a1a24;
+      --border: #2e2e42;
+      --accent: #ff5fa0;
+      --accent2: #a855f7;
+      --text: #e8e8f0;
+      --muted: #8888aa;
+      --radius: 14px;
+    }
+
+    body {
+      font-family: 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 60px 24px 80px;
+    }
+
+    /* ── Header ── */
+    .header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .header__badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 18px;
+    }
+
+    .header__title {
+      font-size: clamp(26px, 5vw, 42px);
+      font-weight: 700;
+      letter-spacing: -.02em;
+      line-height: 1.2;
+      background: linear-gradient(135deg, #fff 30%, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header__sub {
+      margin-top: 10px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* ── Table wrapper ── */
+    .table-wrap {
+      width: 550px;
+      margin: 0 auto;
+      background: var(--surface);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow:
+        0 0 0 1px rgba(255, 95, 160, .08),
+        0 24px 64px rgba(0, 0, 0, .5);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    /* ── thead ── */
+    thead tr {
+      background: linear-gradient(90deg, rgba(255, 95, 160, .15) 0%, rgba(168, 85, 247, .15) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      padding: 5px 5px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    th:first-child {
+      width: 48px;
+      text-align: center;
+    }
+
+    th:last-child {
+      width: 180px;
+    }
+
+    /* ── tbody ── */
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background .18s;
+    }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: rgba(255, 255, 255, .035);
+    }
+
+    td {
+      padding: 5px;
+      font-size: 14px;
+      vertical-align: middle;
+    }
+
+    td:first-child {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* page name */
+    .page-name {
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      flex-shrink: 0;
+    }
+
+    /* link column */
+    .link-cell {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .file-chip {
+      font-size: 12px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 3px 10px;
+      font-family: 'Courier New', monospace;
+    }
+
+    .go-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: opacity .18s, transform .18s;
+      white-space: nowrap;
+      margin-left: auto;
+    }
+
+    .go-btn:hover {
+      opacity: .85;
+      transform: translateY(-1px);
+    }
+
+    .go-btn svg {
+      width: 12px;
+      height: 12px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .footer span {
+      color: var(--accent);
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="header">
+    <div class="header__badge">Web Publishing</div>
+    <h1 class="header__title">심쿵박스 페이지 목록</h1>
+    <p class="header__sub">pages/ 폴더 내 전체 HTML 파일 목록입니다.</p>
+  </header>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>페이지명</th>
+          <th>링크 (파일명)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>01</td>
+          <td><span class="page-name"><span class="dot"></span>공통 컴포넌트 모음</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">common.html</span>
+              <a class="go-btn" href="pages/common.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>02</td>
+          <td><span class="page-name"><span class="dot"></span>로딩</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">loading.html</span>
+              <a class="go-btn" href="pages/loading.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>03</td>
+          <td><span class="page-name"><span class="dot"></span>로그인</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">login.html</span>
+              <a class="go-btn" href="pages/login.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>04</td>
+          <td><span class="page-name"><span class="dot"></span>회원가입 약관동의</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">join_agree.html</span>
+              <a class="go-btn" href="pages/join_agree.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>05</td>
+          <td><span class="page-name"><span class="dot"></span>회원가입</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">join.html</span>
+              <a class="go-btn" href="pages/join.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>06</td>
+          <td><span class="page-name"><span class="dot"></span>회원가입 팝업</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">join_popup.html</span>
+              <a class="go-btn" href="pages/join_popup.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>07</td>
+          <td><span class="page-name"><span class="dot"></span>회원가입 완료</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">join_end.html</span>
+              <a class="go-btn" href="pages/join_end.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="height:20px;"></div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>페이지명</th>
+          <th>링크 (파일명)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>08</td>
+          <td><span class="page-name"><span class="dot"></span>홈 ver.1</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">home_ver1.html</span>
+              <a class="go-btn" href="pages/home_ver1.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>09</td>
+          <td><span class="page-name"><span class="dot"></span>홈 ver.2</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">home_ver2.html</span>
+              <a class="go-btn" href="pages/home_ver2.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td><span class="page-name"><span class="dot"></span>이용약관 팝업</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">home_agree.html</span>
+              <a class="go-btn" href="pages/home_agree.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>11</td>
+          <td><span class="page-name"><span class="dot"></span>개인정보처리방침 팝업</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">home_privacy.html</span>
+              <a class="go-btn" href="pages/home_privacy.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+
+
+        <tr>
+          <td>12</td>
+          <td><span class="page-name"><span class="dot"></span>홈>상품</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">home_products.html</span>
+              <a class="go-btn" href="pages/home_products.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>13</td>
+          <td><span class="page-name"><span class="dot"></span>라이브</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">live.html</span>
+              <a class="go-btn" href="pages/live.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>14</td>
+          <td><span class="page-name"><span class="dot"></span>이벤트 </span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">event.html</span>
+              <a class="go-btn" href="pages/event.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>15</td>
+          <td><span class="page-name"><span class="dot"></span>랭킹전</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">ranking.html</span>
+              <a class="go-btn" href="pages/ranking.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>16</td>
+          <td><span class="page-name"><span class="dot"></span>제품 상세페이지(품절)</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">products_soldout.html</span>
+              <a class="go-btn" href="pages/products_soldout.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>17</td>
+          <td><span class="page-name"><span class="dot"></span>제품 상세페이지</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">products_detail.html</span>
+              <a class="go-btn" href="pages/products_detail.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>18</td>
+          <td><span class="page-name"><span class="dot"></span>알림 내역 없음</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">alarm_none.html</span>
+              <a class="go-btn" href="pages/alarm_none.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="height:20px;"></div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>페이지명</th>
+          <th>링크 (파일명)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>19</td>
+          <td><span class="page-name"><span class="dot"></span>박스 구매A</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">box_A.html</span>
+              <a class="go-btn" href="pages/box_A.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>20</td>
+          <td><span class="page-name"><span class="dot"></span>박스 구매B</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">box_B.html</span>
+              <a class="go-btn" href="pages/box_B.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>21</td>
+          <td><span class="page-name"><span class="dot"></span>박스 구매 완료 팝업</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">box_B_popup.html</span>
+              <a class="go-btn" href="pages/box_B_popup.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="height:20px;"></div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>페이지명</th>
+          <th>링크 (파일명)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>22</td>
+          <td><span class="page-name"><span class="dot"></span>신상품 소식</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">new.html</span>
+              <a class="go-btn" href="pages/new.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>23</td>
+          <td><span class="page-name"><span class="dot"></span>홈 > 심쿵마켓</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">home_market.html</span>
+              <a class="go-btn" href="pages/home_market.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="height:20px;"></div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>페이지명</th>
+          <th>링크 (파일명)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>24</td>
+          <td><span class="page-name"><span class="dot"></span>심쿵마켓</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">market.html</span>
+              <a class="go-btn" href="pages/market.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>25</td>
+          <td><span class="page-name"><span class="dot"></span>심쿵마켓 > 이용 가이드 클릭시</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">market_popup.html</span>
+              <a class="go-btn" href="pages/market_popup.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="height:20px;"></div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>페이지명</th>
+          <th>링크 (파일명)</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr>
+          <td>26</td>
+          <td><span class="page-name"><span class="dot"></span>보관함 > 비어있음</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">storage_none.html</span>
+              <a class="go-btn" href="pages/storage_none.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>27</td>
+          <td><span class="page-name"><span class="dot"></span>보관함 > 박스함</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">storage01.html</span>
+              <a class="go-btn" href="pages/storage01.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>28</td>
+          <td><span class="page-name"><span class="dot"></span>보관함 > 상품함</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">storage02.html</span>
+              <a class="go-btn" href="pages/storage02.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>29</td>
+          <td><span class="page-name"><span class="dot"></span>보관함 > 금고함</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">storage03.html</span>
+              <a class="go-btn" href="pages/storage03.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>30</td>
+          <td><span class="page-name"><span class="dot"></span>보관함 > 금고함 이동 팝업</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">storage03_popup.html</span>
+              <a class="go-btn" href="pages/storage03_popup.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>31</td>
+          <td><span class="page-name"><span class="dot"></span>결제(배송지없음)</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">pay.html</span>
+              <a class="go-btn" href="pages/pay.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>32</td>
+          <td><span class="page-name"><span class="dot"></span>결제(배송지추가시)</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">pay_add.html</span>
+              <a class="go-btn" href="pages/pay_add.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+
+        <!--  -->
+        <tr>
+          <td>33</td>
+          <td><span class="page-name"><span class="dot"></span>주문완료</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">pay_end.html</span>
+              <a class="go-btn" href="pages/pay_end.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>34</td>
+          <td><span class="page-name"><span class="dot"></span>환급하기 팝업</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">refund_popup.html</span>
+              <a class="go-btn" href="pages/refund_popup.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>35</td>
+          <td><span class="page-name"><span class="dot"></span>보관함 > 선물함</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">storage04.html</span>
+              <a class="go-btn" href="pages/storage04.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>36</td>
+          <td><span class="page-name"><span class="dot"></span>보관함 > 배송내역</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">storage05.html</span>
+              <a class="go-btn" href="pages/storage05.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="height:20px;"></div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>페이지명</th>
+          <th>링크 (파일명)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>37</td>
+          <td><span class="page-name"><span class="dot"></span>마이페이지</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">mypage.html</span>
+              <a class="go-btn" href="pages/mypage.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>38</td>
+          <td><span class="page-name"><span class="dot"></span>회원정보 설정</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">mypage_setting.html</span>
+              <a class="go-btn" href="pages/mypage_setting.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>39</td>
+          <td><span class="page-name"><span class="dot"></span>마이페이지>닉네임 변경</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">mypage_popup_nickname.html</span>
+              <a class="go-btn" href="pages/mypage_popup_nickname.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>40</td>
+          <td><span class="page-name"><span class="dot"></span>마이페이지>비밀번호 변경</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">mypage_popup_password.html</span>
+              <a class="go-btn" href="pages/mypage_popup_password.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>41</td>
+          <td><span class="page-name"><span class="dot"></span>친구 관리</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">storage_friend.html</span>
+              <a class="go-btn" href="pages/storage_friend.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>42</td>
+          <td><span class="page-name"><span class="dot"></span>친구 관리</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">storage_friend2.html</span>
+              <a class="go-btn" href="pages/storage_friend2.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>43</td>
+          <td><span class="page-name"><span class="dot"></span>친구 추가 팝업</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">storage_friend_popup.html</span>
+              <a class="go-btn" href="pages/storage_friend_popup.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>44</td>
+          <td><span class="page-name"><span class="dot"></span>배송지 없음</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">addr_none.html</span>
+              <a class="go-btn" href="pages/addr_none.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>45</td>
+          <td><span class="page-name"><span class="dot"></span>배송지 추가</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">addr_add.html</span>
+              <a class="go-btn" href="pages/addr_add.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>46</td>
+          <td><span class="page-name"><span class="dot"></span>배송지 추가시</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">addr_added.html</span>
+              <a class="go-btn" href="pages/addr_added.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>47</td>
+          <td><span class="page-name"><span class="dot"></span>배송지 삭제 모달</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">addr_added_popup.html</span>
+              <a class="go-btn" href="pages/addr_added_popup.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>48</td>
+          <td><span class="page-name"><span class="dot"></span>구매내역(없을 때)</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">addr_added_none.html</span>
+              <a class="go-btn" href="pages/addr_added_none.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>49</td>
+          <td><span class="page-name"><span class="dot"></span>구매내역</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">buy_list.html</span>
+              <a class="go-btn" href="pages/buy_list.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>50</td>
+          <td><span class="page-name"><span class="dot"></span>포인트</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">point.html</span>
+              <a class="go-btn" href="pages/point.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>51</td>
+          <td><span class="page-name"><span class="dot"></span>보유쿠폰</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">coupon.html</span>
+              <a class="go-btn" href="pages/coupon.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+
+        <tr>
+          <td>52</td>
+          <td><span class="page-name"><span class="dot"></span>쿠폰등록</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">coupon_popup.html</span>
+              <a class="go-btn" href="pages/coupon_popup.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>53</td>
+          <td><span class="page-name"><span class="dot"></span>쿠폰함(없을때)</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">coupon_none.html</span>
+              <a class="go-btn" href="pages/coupon_none.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>54</td>
+          <td><span class="page-name"><span class="dot"></span>쿠폰함</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">couponbox.html</span>
+              <a class="go-btn" href="pages/couponbox.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>55</td>
+          <td><span class="page-name"><span class="dot"></span>탈퇴</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">out.html</span>
+              <a class="go-btn" href="pages/out.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="height:20px;"></div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>번호</th>
+          <th>페이지명</th>
+          <th>링크</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>56</td>
+          <td><span class="page-name"><span class="dot"></span>자주묻는질문</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">faq.html</span>
+              <a class="go-btn" href="pages/faq.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td>57</td>
+          <td><span class="page-name"><span class="dot"></span>1:1문의</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">contact.html</span>
+              <a class="go-btn" href="pages/contact.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>58</td>
+          <td><span class="page-name"><span class="dot"></span>1:1문의>문의상세</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">contact_detail.html</span>
+              <a class="go-btn" href="pages/contact_detail.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>59</td>
+          <td><span class="page-name"><span class="dot"></span>1:1문의>문의하기</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">contact_form.html</span>
+              <a class="go-btn" href="pages/contact_form.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>60</td>
+          <td><span class="page-name"><span class="dot"></span>공지사항</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">notice.html</span>
+              <a class="go-btn" href="pages/notice.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>61</td>
+          <td><span class="page-name"><span class="dot"></span>공지사항 상세</span></td>
+          <td>
+            <div class="link-cell">
+              <span class="file-chip">notice_detail.html</span>
+              <a class="go-btn" href="pages/notice_detail.html" target="_blank">
+                바로가기
+                <svg viewBox="0 0 24 24">
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</body>
+
+</html>
